@@ -1,6 +1,7 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:opinionx/pages/developerPage.dart';
 import 'package:opinionx/utils/constants.dart';
 import 'package:toggle_switch/toggle_switch.dart';
 
@@ -81,33 +82,23 @@ class _CustomNavDrawerState extends State<CustomNavDrawer> {
           _list(Icons.payment, "Payment Methods", () {}),
           _list(Icons.local_offer_outlined, "Offers", () {}),
           _list(Icons.share, "Share", () {}),
-          _list(Icons.support_agent_outlined, "Support", () {}),
+          _list(Icons.support_agent_outlined, "About", () {Navigator.push(context, MaterialPageRoute(builder: (_)=>DeveloperPage()));}),
           _list(Icons.logout_outlined, "Sign out", () async {
             //  await APIs.Signout(); Navigator.pushAndRemoveUntil(context, MaterialPageRoute(builder: (_)=>Auth()), (route) => false,);
           }),
-          Spacer(),
-          Divider(),
-          _list(Icons.question_mark_sharp, "Colour Scheme", () {}),
-          ToggleSwitch(
-            minWidth: 90.0,
-            initialLabelIndex: 1,
-            cornerRadius: 20.0,
-            activeFgColor: Colors.black,
-            inactiveBgColor: Colors.white,
-            inactiveFgColor: Colors.black,
-            totalSwitches: 2,
-            labels: ['Light', 'Dark'],
-            icons: [Icons.sunny, Icons.nights_stay_outlined],
-            activeBgColors: [
-              [Color(0x535763)],
-              [Constants.searchBarColour]
-            ],
-            onToggle: (index) {
-              print('switched to: $index');
-            },
+          const Spacer(),
+          Text(
+            'Made with ❤️ By OpinionX',
+            style: GoogleFonts.epilogue(
+              textStyle: const TextStyle(
+                fontSize: 15,
+                color: Constants.BLACK,
+                fontWeight: FontWeight.bold,
+              ),
+            ),
           ),
           SizedBox(
-            height: 10,
+            height: 50,
           )
         ],
       ),

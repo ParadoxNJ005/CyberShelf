@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:opinionx/screens/home.dart';
+import 'package:opinionx/pages/HomePage.dart';
+import 'package:opinionx/pages/splashscreen.dart';
 import 'package:opinionx/utils/constants.dart';
 
 void main() {
@@ -40,7 +41,7 @@ class MyApp extends StatelessWidget {
         ),
       ),
       debugShowCheckedModeBanner: false,
-      home: HomeScreen(),
+      home: SplashScreen(),
     );
   }
 }
