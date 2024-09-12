@@ -142,7 +142,7 @@ class _DeveloperPageState extends State<DeveloperPage> with TickerProviderStateM
                       mainAxisAlignment: MainAxisAlignment.spaceAround,
                       children: [
                         _devimage(url, "Lord Naitik", "Tech Lead"),
-                        _devimage(url, "Yojit Kapoor", "On periods"),
+                        _devimage(url, "Yojit Kapoor", "Head"),
                       ],
                     ),
                   ),
@@ -153,7 +153,7 @@ class _DeveloperPageState extends State<DeveloperPage> with TickerProviderStateM
                       mainAxisAlignment: MainAxisAlignment.spaceAround,
                       children: [
                         _devimage(url, "Mukund Narayan Jha", "UI/UX Designer"),
-                        _devimage(url, "Vansh Dhawan", "Pole Dancer"),
+                        _devimage(url, "Vansh Dhawan", "head"),
                       ],
                     ),
                   )

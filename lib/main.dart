@@ -1,9 +1,18 @@
 import 'package:flutter/material.dart';
+import 'package:opinionx/pages/CollegeDetails.dart';
+import 'package:opinionx/pages/EditProfile.dart';
 import 'package:opinionx/pages/HomePage.dart';
+import 'package:opinionx/pages/SemViseSubjects.dart';
+import 'package:opinionx/pages/SubjectDetails.dart';
+import 'package:opinionx/pages/mlPage.dart';
+import 'package:opinionx/pages/otpPage.dart';
+import 'package:opinionx/pages/paymentsPage.dart';
 import 'package:opinionx/pages/splashscreen.dart';
 import 'package:opinionx/utils/constants.dart';
+import 'models/SpecificSubjectModel.dart';
 
-void main() {
+
+void main() async{
   runApp(const MyApp());
 }
 
@@ -41,6 +50,7 @@ class MyApp extends StatelessWidget {
         ),
       ),
       debugShowCheckedModeBanner: false,
+      // home: Otppage(email: "naitikjain2005@gmail.com",),
       home: SplashScreen(),
     );
   }

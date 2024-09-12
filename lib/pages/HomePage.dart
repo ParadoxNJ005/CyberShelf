@@ -62,7 +62,8 @@ class _HomeScreenState extends State<HomeScreen> {
     await APIs.fetchAllSubjects();
     await APIs.fetchSemSubjectName();
     setState(() {
-      eceList = APIs.semSubjectName?.ece ?? [];
+      // eceList = APIs.semSubjectName?.ece ?? [];
+      eceList = [];
     });
   }
 

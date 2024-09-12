@@ -1,9 +1,18 @@
+import 'dart:developer';
+
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:opinionx/components/custom_helpr.dart';
+import 'package:opinionx/pages/EditProfile.dart';
+import 'package:opinionx/pages/SubjectDetails.dart';
 import 'package:opinionx/pages/developerPage.dart';
+import 'package:opinionx/pages/signup.dart';
 import 'package:opinionx/utils/constants.dart';
 import 'package:toggle_switch/toggle_switch.dart';
+
+import '../database/Apis.dart';
+import '../pages/SemViseSubjects.dart';
 
 class CustomNavDrawer extends StatefulWidget {
   const CustomNavDrawer({super.key});
@@ -72,19 +81,27 @@ class _CustomNavDrawerState extends State<CustomNavDrawer> {
                 ),
               )),
           _list(Icons.calendar_today_rounded, "Subjects", () {
-            // Navigator.push(context, MaterialPageRoute(builder: (_)=>SemViseSubjects()));
+            Navigator.push(context, MaterialPageRoute(builder: (_)=>SemViseSubjects()));
           }),
           _list(Icons.notifications_active, "Notifications", () {}),
-          _list(Icons.location_on_outlined, "Address", () {}),
+          _list(Icons.location_on_outlined, "LAL", () {
+            Navigator.push(context, MaterialPageRoute(builder: (_)=>SubjectDetail()));
+          }),
           _list(Icons.person, "Profile", () {
-            // Navigator.push(context, MaterialPageRoute(builder: (_) => ProfilePage()));
+            Navigator.push(context, MaterialPageRoute(builder: (_) => EditProfile()));
           }),
           _list(Icons.payment, "Payment Methods", () {}),
           _list(Icons.local_offer_outlined, "Offers", () {}),
           _list(Icons.share, "Share", () {}),
           _list(Icons.support_agent_outlined, "About", () {Navigator.push(context, MaterialPageRoute(builder: (_)=>DeveloperPage()));}),
           _list(Icons.logout_outlined, "Sign out", () async {
-            //  await APIs.Signout(); Navigator.pushAndRemoveUntil(context, MaterialPageRoute(builder: (_)=>Auth()), (route) => false,);
+             bool res = await APIs.Signout(APIs.me!.email);
+             log("APIs.me  ${APIs.me?.email}");
+
+             if(res)
+             Navigator.pushAndRemoveUntil(context, MaterialPageRoute(builder: (_)=>Signup(isSignin: false)), (route) => false,);
+             else
+               Dialogs.showSnackbar(context, "Error Unable to logout");
           }),
           const Spacer(),
           Text(

@@ -94,25 +94,25 @@ class LOCALs{
             var subject = SemViseSubject.fromJson(decodedJson);
 
             // Extract and process the ece subjects
-            if (subject.ece != null) {
-              subject.ece!.forEach((eceItem) {
-                finalSearchSubjectList.add(eceItem.split('_').last);
-              });
-            }
-
-            // Extract and process the IT subjects
-            if (subject.it != null) {
-              subject.it!.forEach((eceItem) {
-                finalSearchSubjectList.add(eceItem.split('_').last);
-              });
-            }
-
-            // Extract and process the IT-BI subjects
-            if (subject.itBi != null) {
-              subject.itBi!.forEach((eceItem) {
-                finalSearchSubjectList.add(eceItem.split('_').last);
-              });
-            }
+            // if (subject.ece != null) {
+            //   subject.ece!.forEach((eceItem) {
+            //     finalSearchSubjectList.add(eceItem.split('_').last);
+            //   });
+            // }
+            //
+            // // Extract and process the IT subjects
+            // if (subject.it != null) {
+            //   subject.it!.forEach((eceItem) {
+            //     finalSearchSubjectList.add(eceItem.split('_').last);
+            //   });
+            // }
+            //
+            // // Extract and process the IT-BI subjects
+            // if (subject.itBi != null) {
+            //   subject.itBi!.forEach((eceItem) {
+            //     finalSearchSubjectList.add(eceItem.split('_').last);
+            //   });
+            // }
 
             finalSearchSubjectList = finalSearchSubjectList.toSet().toList();
 

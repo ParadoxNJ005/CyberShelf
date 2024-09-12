@@ -5,6 +5,7 @@ import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:flutter_svg/flutter_svg.dart'; // Import for SVG support
 import 'package:google_fonts/google_fonts.dart';
 import 'package:opinionx/pages/HomePage.dart';
+import 'package:opinionx/pages/signup.dart';
 import 'package:opinionx/utils/constants.dart';
 /*
 after this page there should be 3 landing pages if the user is not logged int
@@ -34,11 +35,11 @@ class _SplashScreenState extends State<SplashScreen> {
     final storage = new FlutterSecureStorage();
     final temp = await storage.read(key: "me");
     log("${temp}");
-    //
+
     if (temp != null) {
-      // Navigator.pushReplacement(context, MaterialPageRoute(builder: (_)=>HomePage()));
-    } else {
       Navigator.pushReplacement(context, MaterialPageRoute(builder: (_)=>HomeScreen()));
+    } else {
+      Navigator.pushReplacement(context, MaterialPageRoute(builder: (_)=>Signup(isSignin: false,)));
     }
   }
 

@@ -2,6 +2,7 @@ import 'dart:convert';
 import 'dart:developer';
 import 'dart:io';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
+import 'package:opinionx/database/NetworkHandler.dart';
 
 import '../models/SemViseSubModel.dart';
 import '../models/SpecificSubjectModel.dart';
@@ -13,7 +14,8 @@ class APIs {
   // static FirebaseFirestore firestore = FirebaseFirestore.instance;
   static ChatUser? me;  //my info
   static SemViseSubject? semSubjectName;
-  static SpecificSubject? allSubject;                              //no usage
+  static SpecificSubject? allSubject;
+  //no usage
   // static final user_uid = auth.currentUser!.uid;
 
 //--------------FETCH ALL SUBJECTS DATA AND STORE IT INTO LOCAL STORAGE--------------------------------------------//
@@ -27,8 +29,35 @@ class APIs {
   }
 
 //-----------------------------Fetch the user data-------------------------------------------------//
-  static Future<void> myInfo() async{
+  static Future<void> myInfo() async {
+    final storage = FlutterSecureStorage();
+    String? response = await storage.read(key: 'me');
 
+    if (response != null) {
+      // Decode the JSON string into a Map
+      Map<String, dynamic> data = jsonDecode(response);
+
+      // Log the decoded data (optional, for debugging)
+      log("Decoded data: $data");
+
+      // Ensure APIs.me is initialized
+      if (APIs.me == null) {
+        APIs.me = ChatUser(uid: ''); // Initialize with a default UID or handle as needed
+      }
+
+      // Safely assign values to APIs.me
+      APIs.me?.name = data["name"];
+      APIs.me?.email = data["email"];
+      APIs.me?.imageUrl = data["imageUrl"];
+      APIs.me?.college = "IIITA"; // This is hardcoded as per your original code
+      APIs.me?.batch = data["batch"] != null ? int.tryParse(data["batch"].toString()) : null;
+      APIs.me?.branch = data["branch"];
+
+      log("${APIs.me?.name} ${APIs.me?.email} ${APIs.me?.imageUrl} ${APIs.me?.batch}");
+    } else {
+      // Handle the case where response is null (optional)
+      log("No data found in secure storage.");
+    }
   }
 
 //-----------------------------If User Exists Store All the Data From Local Storage to me-------------------//
@@ -72,7 +101,17 @@ class APIs {
   }
 
 //----------------------------Sign Out User From the Application-----------------------------------//
-  static Future<void> Signout() async{
+  static Future<bool> Signout(String? email) async{
+      Networkhandler networkhandler = Networkhandler();
+      final storage = FlutterSecureStorage();
+      var response = await networkhandler.post("/user/signout", {"email" : email});
+      if(response["Status"] == "200"){
+         await storage.delete(key: "me");
+          return true;
+      }else{
+         log("error occured");
+         return false;
+      }
 
   }
 }
