@@ -4,7 +4,6 @@ import 'package:opinionx/pages/EditProfile.dart';
 import 'package:opinionx/pages/HomePage.dart';
 import 'package:opinionx/pages/SemViseSubjects.dart';
 import 'package:opinionx/pages/SubjectDetails.dart';
-import 'package:opinionx/pages/mlPage.dart';
 import 'package:opinionx/pages/otpPage.dart';
 import 'package:opinionx/pages/paymentsPage.dart';
 import 'package:opinionx/pages/splashscreen.dart';

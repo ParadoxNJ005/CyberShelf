@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'dart:developer';
 import 'dart:math';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -46,15 +47,18 @@ class _HomeScreenState extends State<HomeScreen> {
   Future<void> _initializeData() async {
     await APIs.offlineInfo();
     await LOCALs.MakeSearchFunctionality();
-    // _findFromSearchList = await LOCALs.finalSeachDataList?? [];
-    // String branchName = APIs.me!.branch!;
-    // if (branchName == "ECE") {
-    //   eceList = await APIs.semSubjectName?.ece ?? [];
-    // } else if (branchName == "ITBI") {
-    //   eceList = await APIs.semSubjectName?.itBi ?? [];
-    // } else {
-    //   eceList = await APIs.semSubjectName?.it ?? [];
-    // }
+    await APIs.fetchSemViceSubject();
+    await APIs.myInfo();
+    _findFromSearchList = await LOCALs.finalSeachDataList?? [];
+    String branchName = APIs.me!.branch!;
+    // log("hello world ${branchName}");
+    if (branchName == "ECE") {
+      eceList = (await APIs.semSubjectName?.data?.first.ece)!;
+    } else if (branchName == "IT-BI") {
+      eceList = (await APIs.semSubjectName?.data?.first.itBi)!;
+    } else {
+      eceList = (await APIs.semSubjectName?.data?.first.it)!;
+    }
   }
 
   Future<void> _handleRefresh() async {

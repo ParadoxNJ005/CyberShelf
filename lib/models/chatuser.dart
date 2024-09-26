@@ -14,8 +14,8 @@ class ChatUser {
   String? email;
   String? imageUrl;
   String? college;
-  int? batch;
-  int? semester;
+  String? batch;
+  String? semester;
   String? branch;
   String uid;
 
@@ -25,8 +25,8 @@ class ChatUser {
       email: json['email'] as String?,
       imageUrl: json['imageUrl'] as String?,
       college: json['college'] as String?,
-      batch: json['batch'] as int?,
-      semester: json['semester'] as int?,
+      batch: json['batch'] as String?,
+      semester: json['semester'] as String?,
       branch: json['branch'] as String?,
       uid: json['uid'] as String,
     );

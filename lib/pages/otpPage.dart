@@ -71,8 +71,8 @@ class _OtppageState extends State<Otppage> {
         Map<String, dynamic> mydata = {
           "name": widget.data["name"],
           "email": widget.data["email"],
-          "semester": 1,
-          "batch": 2028,
+          "semester": "1",
+          "batch": "2028",
           "branch":"IT",
           "imageUrl": "https://tse2.mm.bing.net/th?id=OIP.KfJqjn9jazboxjxZp-4nNAHaJQ&pid=Api&P=0&h=180",
           "token": token,

@@ -4,7 +4,7 @@ import 'dart:developer';
 import 'package:http/http.dart' as http;
 
 class Networkhandler {
-  String baseurl = "http://192.168.208.80:7000";
+  String baseurl = "http://192.168.160.80:7000";
 
   Future<dynamic> get(String url) async {
     url = formater(url);

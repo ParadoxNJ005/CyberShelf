@@ -29,16 +29,19 @@ class _EditProfileState extends State<EditProfile> {
   final Networkhandler networkhandler = Networkhandler();
 
   String branch = APIs.me!.branch!;
-  String year = "2022-2026";
-  int semester = 1;
+  String curr_year = APIs.me!.batch!;
+  String year = "";
+  String semester = APIs.me!.semester!;
 
   List<String> branchItems = ['IT', 'ITBI', 'ECE'];
   List<String> yearItems = ['2023-2027', '2022-2026', '2021-2025', '2024-2028'];
-  List<int> semesterItems = [1, 2, 3, 4, 6, 7, 8];
+  List<String> semesterItems = ["1", "2", "3", "4", "6", "7", "8"];
 
   @override
   void initState() {
     super.initState();
+    log("${APIs.me!.semester}    ${APIs.me!.batch}");
+    year = _getYearFromBatch(curr_year);
     SystemChrome.setSystemUIOverlayStyle(SystemUiOverlayStyle(
       statusBarColor: Colors.white,
       statusBarIconBrightness: Brightness.dark,
@@ -72,14 +75,24 @@ class _EditProfileState extends State<EditProfile> {
     }
   }
 
-  String _getYearFromBatch(int? batch) {
+  String _getYearFromBatch(String? batch) {
     if (batch == null) return "2022-2026"; // default value
     // Define the logic to return year based on batch
     // For example:
-    if (batch == 2028) return "2024-2028";
-    if (batch == 2027) return "2023-2027";
-    if (batch == 2026) return "2022-2026";
+    if (batch == "2028") return "2024-2028";
+    if (batch == "2027") return "2023-2027";
+    if (batch == "2026") return "2022-2026";
     return "2021-2025";
+  }
+
+  String _getBatchFromYear(String? batch) {
+    if (batch == null) return "2026"; // default value
+    // Define the logic to return year based on batch
+    // For example:
+    if (batch == "2022-2026") return "2026";
+    if (batch == "2024-2028") return "2028";
+    if (batch == "2023-2027") return "2027";
+    return "2025";
   }
 
   @override
@@ -317,11 +330,13 @@ class _EditProfileState extends State<EditProfile> {
       // Map<String, String> data = jsonDecode(response);
 
       log("dedjewnfkwndedkwkwnnnnnnnnnnnnnnnnnnnnnnn: ${APIs.me?.email}");
+      curr_year = _getBatchFromYear(year);
+
       Map<String, String> payload = {
         "email": APIs.me?.email ?? '',
         "sem": semester.toString(),
         "branch": branch,
-        "year": "0",
+        "year": curr_year.toString(),
         "password": "",
       };
 

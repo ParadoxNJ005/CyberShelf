@@ -25,7 +25,7 @@ class _SemViseSubjectsState extends State<SemViseSubjects>{
   bool _isSearching = false;
   String _searchText = "";
   final List<SemViseSubject> _searchList = [];
-  List<SemViseSubject> _list = [];
+  List<String> _subjectList = [];
   final storage = new FlutterSecureStorage();
   late GlobalKey<RefreshIndicatorState> refreshKey;
   Random random = Random();
@@ -33,7 +33,37 @@ class _SemViseSubjectsState extends State<SemViseSubjects>{
   @override
   void initState(){
     super.initState();
+    _loadSubjectsFromStorage();
     refreshKey = GlobalKey<RefreshIndicatorState>();
+  }
+
+  Future<void> _loadSubjectsFromStorage() async {
+    String? storedData = await storage.read(key: 'semSubjectData');
+    if (storedData != null) {
+      Map<String, dynamic> jsonData = jsonDecode(storedData);
+      SemViseSubject subjectData = SemViseSubject.fromJson(jsonData);
+
+      // Example: Displaying ECE subject list
+      // setState(() {
+      //   _subjectList = subjectData.data?.first.ece ?? [];
+      // });
+      setState(() {
+        String branchName = APIs.me!.branch!;
+        // log("hello world ${branchName}");
+        if (branchName == "ECE") {
+          _subjectList = (APIs.semSubjectName?.data?.first.ece)!;
+        } else if (branchName == "IT-BI") {
+          _subjectList = (APIs.semSubjectName?.data?.first.itBi)!;
+        } else {
+          _subjectList = (APIs.semSubjectName?.data?.first.it)!;
+        }
+      });
+
+    } else {
+      // Fetch data from API if not in storage
+      await APIs.fetchSemViceSubject();
+      _loadSubjectsFromStorage();
+    }
   }
 
   Future<void> _handleRefresh() async {
@@ -126,8 +156,8 @@ class _SemViseSubjectsState extends State<SemViseSubjects>{
                   ),
                   SizedBox(height: 16),
                   Expanded(
-                      // child: _subCardList(APIs.semSubjectName?.ece ?? [])
-                      child: _subCardList([])
+                      child: _subCardList(_subjectList ?? [])
+                      // child: _subCardList([])
                   ),
                 ],
               ),

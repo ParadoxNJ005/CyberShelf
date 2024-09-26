@@ -28,6 +28,30 @@ class APIs {
 
   }
 
+//--------------FETCH ALL SUBJECTS Name Based on the Semester AND STORE IT INTO LOCAL STORAGE--------------------------------------------//
+  static Future<void> fetchSemViceSubject() async {
+    Networkhandler networkhandler = Networkhandler();
+
+    var response = await networkhandler.get("/data/semvisesubject");
+
+    Map<String, dynamic> json = response;
+
+    semSubjectName = SemViseSubject.fromJson(json);
+    log("JSON data: $json");
+
+    if (semSubjectName?.data != null && semSubjectName!.data!.isNotEmpty) {
+      Data firstData = semSubjectName!.data!.first;
+      log("Parsed SemViseSubject: IT-BI: ${firstData.itBi}, ECE: ${firstData.ece}, IT: ${firstData.it}, Year Name: ${firstData.yearName}");
+
+      final storage = FlutterSecureStorage();
+      await storage.write(key: 'semSubjectData', value: jsonEncode(semSubjectName!.toJson()));
+    } else {
+      log("No data found in SemViseSubject.");
+    }
+  }
+
+
+
 //-----------------------------Fetch the user data-------------------------------------------------//
   static Future<void> myInfo() async {
     final storage = FlutterSecureStorage();
@@ -48,9 +72,10 @@ class APIs {
       // Safely assign values to APIs.me
       APIs.me?.name = data["name"];
       APIs.me?.email = data["email"];
+      APIs.me?.semester = data["semester"];
       APIs.me?.imageUrl = data["imageUrl"];
       APIs.me?.college = "IIITA"; // This is hardcoded as per your original code
-      APIs.me?.batch = data["batch"] != null ? int.tryParse(data["batch"].toString()) : null;
+      APIs.me?.batch = data["batch"] ;
       APIs.me?.branch = data["branch"];
 
       log("${APIs.me?.name} ${APIs.me?.email} ${APIs.me?.imageUrl} ${APIs.me?.batch}");

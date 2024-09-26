@@ -1,9 +1,9 @@
 import 'dart:developer';
-
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:opinionx/components/custom_helpr.dart';
+import 'package:opinionx/pages/Classes.dart';
 import 'package:opinionx/pages/EditProfile.dart';
 import 'package:opinionx/pages/SubjectDetails.dart';
 import 'package:opinionx/pages/developerPage.dart';
@@ -90,7 +90,9 @@ class _CustomNavDrawerState extends State<CustomNavDrawer> {
           _list(Icons.person, "Profile", () {
             Navigator.push(context, MaterialPageRoute(builder: (_) => EditProfile()));
           }),
-          _list(Icons.payment, "Payment Methods", () {}),
+          _list(Icons.payment, "Plan Your Day", (){
+              Navigator.push(context, MaterialPageRoute(builder: (_)=>Classes()));
+          }),
           _list(Icons.local_offer_outlined, "Offers", () {}),
           _list(Icons.share, "Share", () {}),
           _list(Icons.support_agent_outlined, "About", () {Navigator.push(context, MaterialPageRoute(builder: (_)=>DeveloperPage()));}),
