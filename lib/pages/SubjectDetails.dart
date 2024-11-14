@@ -1,9 +1,9 @@
 import 'dart:developer';
-
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:opinionx/models/subjectModel.dart';
 import 'package:url_launcher/url_launcher.dart';
 import '../components/custom_helpr.dart';
 import '../models/SpecificSubjectModel.dart';
@@ -11,9 +11,9 @@ import '../utils/constants.dart';
 import 'SearchPage.dart';
 
 class SubjectDetail extends StatefulWidget {
-  // final SpecificSubject subject;
+  final Subject subject;
 
-  const SubjectDetail({super.key});
+  const SubjectDetail({super.key, required this.subject});
 
   @override
   State<SubjectDetail> createState() => _SubjectDetailState();
@@ -35,7 +35,6 @@ class _SubjectDetailState extends State<SubjectDetail> with SingleTickerProvider
     setState(() {});
   }
 
-
   @override
   Widget build(BuildContext context) {
     return DefaultTabController(
@@ -46,8 +45,7 @@ class _SubjectDetailState extends State<SubjectDetail> with SingleTickerProvider
           backgroundColor: Colors.white,
           elevation: 0,
           title: Text(
-            // 'Subjects/${widget.subject.subjectCode}',
-            'Subjects/LAL',
+            'Subjects/${widget.subject.subjectCode ?? 'N/A'}',
             style: GoogleFonts.epilogue(
               textStyle: TextStyle(
                 color: Constants.BLACK,
@@ -112,8 +110,8 @@ class _SubjectDetailState extends State<SubjectDetail> with SingleTickerProvider
                     child: ListTile(
                       leading: Icon(Icons.search),
                       title: Text("Search Subject..."),
-                      onTap: (){
-                        Navigator.push(context, MaterialPageRoute(builder: (_)=>SearchPage()));
+                      onTap: () {
+                        Navigator.push(context, MaterialPageRoute(builder: (_) => SearchPage()));
                       },
                     ),
                   ),
@@ -138,17 +136,13 @@ class _SubjectDetailState extends State<SubjectDetail> with SingleTickerProvider
 
   Widget _buildTabContent(String type) {
     List<Widget> items = [];
-    // if (type == "material") {
-    //   items = widget.subject.material.map((item) => _subCard(item.title, item.contentURL ,"material",widget.subject.material.isEmpty)).toList();
-    // } else if (type == "papers") {
-    //   items = widget.subject.questionPapers.map((item) => _subCard(item.title, item.url ,"papers",widget.subject.questionPapers.isEmpty)).toList();
-    // } else if (type == "links") {
-    //   items = widget.subject.importantLinks.map((item) => _subCard(item.title, item.contentURL ,"links",widget.subject.importantLinks.isEmpty)).toList();
-    // }
-    if(false){
-
-    }
-    else {
+    if (type == "material" && widget.subject.materials != null) {
+      items = widget.subject.materials!.map((item) => _subCard(item.title ?? 'No Title', item.contentUrl ?? '', "material", widget.subject.materials!.isEmpty)).toList();
+    } else if (type == "papers" && widget.subject.questionPapers != null) {
+      items = widget.subject.questionPapers!.map((item) => _subCard(item.title ?? 'No Title', item.url ?? '', "papers", widget.subject.questionPapers!.isEmpty)).toList();
+    } else if (type == "links" && widget.subject.importantLinks != null) {
+      items = widget.subject.importantLinks!.map((item) => _subCard(item.title ?? 'No Title', item.contentUrl ?? '', "links", widget.subject.importantLinks!.isEmpty)).toList();
+    } else {
       return Center(child: Text("No Data Found"));
     }
     return SingleChildScrollView(
@@ -158,24 +152,27 @@ class _SubjectDetailState extends State<SubjectDetail> with SingleTickerProvider
     );
   }
 
-  Widget _subCard(String title, String link ,String type,bool check){
-    if(check){
-      return Column(
-        children: [
-          Container(width: double.infinity ,child: Center(child: Text("✏️ NO DATA FOUND!!" ,style: TextStyle(color: Colors.black,fontSize: 20,fontWeight: FontWeight.w500),))),
-        ],
+  Widget _subCard(String title, String link, String type, bool check) {
+    if (check) {
+      return Container(
+        width: double.infinity,
+        child: Center(
+          child: Text(
+            "✏️ NO DATA FOUND!!",
+            style: TextStyle(color: Colors.black, fontSize: 20, fontWeight: FontWeight.w500),
+          ),
+        ),
       );
-    }else
+    } else {
       return InkWell(
-        onTap: () async{
-          // LOCALs.recents(title,link,type);
-          if(type == "material" || type == "papers"){
-            // Navigator.push(context, MaterialPageRoute(builder: (_)=>OpenPdf(link: link)));
-          }else{
-            try{
-              // LOCALs.launchURL(link);
-            }catch(e){
-              Dialogs.showSnackbar(context, "Unable to Load Url: Error(${e})");
+        onTap: () async {
+          if (type == "material" || type == "papers") {
+            // Handle PDF viewing
+          } else {
+            try {
+              await launch(link);
+            } catch (e) {
+              Dialogs.showSnackbar(context, "Unable to Load Url: Error($e)");
             }
           }
         },
@@ -189,7 +186,7 @@ class _SubjectDetailState extends State<SubjectDetail> with SingleTickerProvider
                   "assets/svgIcons/file_individual.svg",
                 ),
                 onPressed: () {
-                  // Handle drawer opening
+                  // Handle icon press
                 },
               ),
               title: Text(
@@ -201,53 +198,51 @@ class _SubjectDetailState extends State<SubjectDetail> with SingleTickerProvider
                   ),
                 ),
               ),
-              trailing: Container(
-                constraints: BoxConstraints(maxWidth: 40), // Ensure the trailing icon is properly sized
-                child: PopupMenuButton<String>(
-                  onSelected: (value) async {
-                    log("Popup menu item selected: $value");
-                    switch (value) {
-                      case 'share':
-                        log("Copying link to clipboard");
-                        Clipboard.setData(ClipboardData(text: link));
-                        Dialogs.showSnackbar(context, "🔗 Link copied to clipboard!");
-                        break;
-                      case 'download':
-                        log("Download selected");
-                        Clipboard.setData(ClipboardData(text: link));
-                        Dialogs.showSnackbar(context, "🔗 Link copied to clipboard!");
-                        await _showDownloadInstructions(link);
-                        break;
-                    }
-                  },
-                  itemBuilder: (BuildContext context) {
-                    log("Building popup menu items");
-                    return [
-                      PopupMenuItem(
-                        value: 'share',
-                        child: ListTile(
-                          leading: Icon(Icons.share, color: Constants.APPCOLOUR),
-                          title: Text("Share"),
-                        ),
-                      ),
-                      PopupMenuItem(
-                        value: 'download',
-                        child: ListTile(
-                          leading: Icon(Icons.download_sharp, color: Constants.APPCOLOUR),
-                          title: Text("Download"),
-                        ),
-                      ),
-                    ];
-                  },
-                  onCanceled: () {
-                    log("Popup menu canceled");
-                  },
-                ),
-              ),
+              trailing: _buildPopupMenu(link),
             ),
           ),
         ),
       );
+    }
+  }
+
+  Widget _buildPopupMenu(String link) {
+    return PopupMenuButton<String>(
+      onSelected: (value) async {
+        switch (value) {
+          case 'share':
+            Clipboard.setData(ClipboardData(text: link));
+            Dialogs.showSnackbar(context, "🔗 Link copied to clipboard!");
+            break;
+          case 'download':
+            Clipboard.setData(ClipboardData(text: link));
+            Dialogs.showSnackbar(context, "🔗 Link copied to clipboard!");
+            await _showDownloadInstructions(link);
+            break;
+        }
+      },
+      itemBuilder: (BuildContext context) {
+        return [
+          PopupMenuItem(
+            value: 'share',
+            child: ListTile(
+              leading: Icon(Icons.share, color: Constants.APPCOLOUR),
+              title: Text("Share"),
+            ),
+          ),
+          PopupMenuItem(
+            value: 'download',
+            child: ListTile(
+              leading: Icon(Icons.download_sharp, color: Constants.APPCOLOUR),
+              title: Text("Download"),
+            ),
+          ),
+        ];
+      },
+      onCanceled: () {
+        log("Popup menu canceled");
+      },
+    );
   }
 
   Future<void> _showDownloadInstructions(String url) async {
@@ -283,14 +278,10 @@ class _SubjectDetailState extends State<SubjectDetail> with SingleTickerProvider
   }
 
   Future<void> _openInBrowser(String url) async {
-    try {
-      if (await canLaunch(url)) {
-        await launch(url, forceSafariVC: false,
-            forceWebView: false); // Open in default browser (Chrome)
-        // log("URL opened in browser");
-      } else {}
-    } catch (e) {
-      // log("Error opening URL: $e");
+    if (await canLaunch(url)) {
+      await launch(url, forceSafariVC: false, forceWebView: false);
+    } else {
+      log("Error opening URL");
     }
   }
 }

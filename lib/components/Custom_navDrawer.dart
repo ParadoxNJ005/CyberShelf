@@ -7,6 +7,7 @@ import 'package:opinionx/pages/Classes.dart';
 import 'package:opinionx/pages/EditProfile.dart';
 import 'package:opinionx/pages/SubjectDetails.dart';
 import 'package:opinionx/pages/developerPage.dart';
+import 'package:opinionx/pages/erp.dart';
 import 'package:opinionx/pages/signup.dart';
 import 'package:opinionx/utils/constants.dart';
 import 'package:toggle_switch/toggle_switch.dart';
@@ -85,15 +86,17 @@ class _CustomNavDrawerState extends State<CustomNavDrawer> {
           }),
           _list(Icons.notifications_active, "Notifications", () {}),
           _list(Icons.location_on_outlined, "LAL", () {
-            Navigator.push(context, MaterialPageRoute(builder: (_)=>SubjectDetail()));
+            // Navigator.push(context, MaterialPageRoute(builder: (_)=>SubjectDetail()));
           }),
           _list(Icons.person, "Profile", () {
-            Navigator.push(context, MaterialPageRoute(builder: (_) => EditProfile()));
+            Navigator.push(context, MaterialPageRoute(builder: (_) =>EditProfile()));
           }),
           _list(Icons.payment, "Plan Your Day", (){
               Navigator.push(context, MaterialPageRoute(builder: (_)=>Classes()));
           }),
-          _list(Icons.local_offer_outlined, "Offers", () {}),
+          _list(Icons.local_offer_outlined, "Student Portal", (){
+              Navigator.push(context, MaterialPageRoute(builder: (_)=>Erp()));
+          }),
           _list(Icons.share, "Share", () {}),
           _list(Icons.support_agent_outlined, "About", () {Navigator.push(context, MaterialPageRoute(builder: (_)=>DeveloperPage()));}),
           _list(Icons.logout_outlined, "Sign out", () async {

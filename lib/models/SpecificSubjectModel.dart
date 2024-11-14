@@ -1,171 +1,189 @@
 class SpecificSubject {
-  SpecificSubject({
-    required this.questionPapers,
-    required this.subjectCode,
-    required this.moderators,
-    required this.recommendedBooks,
-    required this.material,
-    required this.importantLinks,
-  });
+  List<Sub>? sub;
 
-  late final List<QuestionPapers> questionPapers;
-  late final String subjectCode;
-  late final List<MODERATORS> moderators;
-  late final List<RecommendedBooks> recommendedBooks;
-  late final List<Material> material;
-  late final List<ImportantLinks> importantLinks;
+  SpecificSubject({this.sub});
 
-  SpecificSubject.fromJson(Map<String, dynamic> json){
-    questionPapers = List.from(json['QuestionPapers']).map((e) => QuestionPapers.fromJson(e)).toList();
-    subjectCode = json['SubjectCode'] ?? "";
-    moderators = List.from(json['MODERATORS']).map((e) => MODERATORS.fromJson(e)).toList();
-    recommendedBooks = List.from(json['Recommended Books']).map((e) => RecommendedBooks.fromJson(e)).toList();
-    material = List.from(json['Material']).map((e) => Material.fromJson(e)).toList();
-    importantLinks = List.from(json['Important Links']).map((e) => ImportantLinks.fromJson(e)).toList();
+  SpecificSubject.fromJson(Map<String, dynamic> json) {
+    sub = json["sub"] == null ? null : (json["sub"] as List).map((e) => Sub.fromJson(e)).toList();
   }
 
   Map<String, dynamic> toJson() {
-    final _data = <String, dynamic>{};
-    _data['QuestionPapers'] = questionPapers.map((e) => e.toJson()).toList();
-    _data['SubjectCode'] = subjectCode;
-    _data['MODERATORS'] = moderators.map((e) => e.toJson()).toList();
-    _data['Recommended Books'] = recommendedBooks.map((e) => e.toJson()).toList();
-    _data['Material'] = material.map((e) => e.toJson()).toList();
-    _data['Important Links'] = importantLinks.map((e) => e.toJson()).toList();
-    return _data;
+    final Map<String, dynamic> data = <String, dynamic>{};
+    if (sub != null) data["sub"] = sub?.map((e) => e.toJson()).toList();
+    return data;
   }
 }
 
-class QuestionPapers {
-  QuestionPapers({
-    required this.type,
-    required this.year,
-    required this.title,
-    required this.id,
-    required this.url,
+class Sub {
+  String? id;
+  String? subjectCode;
+  List<QuestionPapers>? questionPapers;
+  List<Moderators>? moderators;
+  List<RecommendedBooks>? recommendedBooks;
+  List<Material>? material;
+  List<ImportantLinks>? importantLinks;
+
+  Sub({
+    this.id,
+    this.subjectCode,
+    this.questionPapers,
+    this.moderators,
+    this.recommendedBooks,
+    this.material,
+    this.importantLinks,
   });
 
-  late final String type;
-  late final String year;
-  late final String title;
-  late final String id;
-  late final String url;
-
-  QuestionPapers.fromJson(Map<String, dynamic> json){
-    type = json['Type'] ?? "";
-    year = json['Year'] ?? "";
-    title = json['Title'] ?? "";
-    id = json['id'] ?? "";
-    url = json['URL'] ?? "";
+  Sub.fromJson(Map<String, dynamic> json) {
+    id = json["_id"];
+    subjectCode = json["SubjectCode"];
+    questionPapers = json["QuestionPapers"] == null
+        ? null
+        : (json["QuestionPapers"] as List).map((e) => QuestionPapers.fromJson(e)).toList();
+    moderators = json["MODERATORS"] == null
+        ? null
+        : (json["MODERATORS"] as List).map((e) => Moderators.fromJson(e)).toList();
+    recommendedBooks = json["Recommended Books"] == null
+        ? null
+        : (json["Recommended Books"] as List).map((e) => RecommendedBooks.fromJson(e)).toList();
+    material = json["Material"] == null
+        ? null
+        : (json["Material"] as List).map((e) => Material.fromJson(e)).toList();
+    importantLinks = json["Important Links"] == null
+        ? null
+        : (json["Important Links"] as List).map((e) => ImportantLinks.fromJson(e)).toList();
   }
 
   Map<String, dynamic> toJson() {
-    final _data = <String, dynamic>{};
-    _data['Type'] = type;
-    _data['Year'] = year;
-    _data['Title'] = title;
-    _data['id'] = id;
-    _data['URL'] = url;
-    return _data;
-  }
-}
-
-class MODERATORS {
-  MODERATORS({
-    required this.contactNumber,
-    required this.uid,
-    required this.name,
-  });
-
-  late final String contactNumber;
-  late final String uid;
-  late final String name;
-
-  MODERATORS.fromJson(Map<String, dynamic> json){
-    contactNumber = json['Contact Number'] ?? "";
-    uid = json['uid'] ?? "";
-    name = json['Name'] ?? "";
-  }
-
-  Map<String, dynamic> toJson() {
-    final _data = <String, dynamic>{};
-    _data['Contact Number'] = contactNumber;
-    _data['uid'] = uid;
-    _data['Name'] = name;
-    return _data;
-  }
-}
-
-class RecommendedBooks {
-  RecommendedBooks({
-    required this.author,
-    required this.publication,
-    required this.bookTitle,
-  });
-
-  late final String author;
-  late final String publication;
-  late final String bookTitle;
-
-  RecommendedBooks.fromJson(Map<String, dynamic> json){
-    author = json['Author'] ?? "";
-    publication = json['Publication'] ?? "";
-    bookTitle = json['BookTitle'] ?? "";
-  }
-
-  Map<String, dynamic> toJson() {
-    final _data = <String, dynamic>{};
-    _data['Author'] = author;
-    _data['Publication'] = publication;
-    _data['BookTitle'] = bookTitle;
-    return _data;
-  }
-}
-
-class Material {
-  Material({
-    required this.contentURL,
-    required this.title,
-    required this.id,
-  });
-
-  late final String contentURL;
-  late final String title;
-  late final String id;
-
-  Material.fromJson(Map<String, dynamic> json){
-    contentURL = json['Content URL'] ?? "";
-    title = json['Title'] ?? "";
-    id = json['id'] ?? "";
-  }
-
-  Map<String, dynamic> toJson() {
-    final _data = <String, dynamic>{};
-    _data['Content URL'] = contentURL;
-    _data['Title'] = title;
-    _data['id'] = id;
-    return _data;
+    final Map<String, dynamic> data = <String, dynamic>{};
+    data["_id"] = id;
+    data["SubjectCode"] = subjectCode;
+    if (questionPapers != null) data["QuestionPapers"] = questionPapers?.map((e) => e.toJson()).toList();
+    if (moderators != null) data["MODERATORS"] = moderators?.map((e) => e.toJson()).toList();
+    if (recommendedBooks != null) data["Recommended Books"] = recommendedBooks?.map((e) => e.toJson()).toList();
+    if (material != null) data["Material"] = material?.map((e) => e.toJson()).toList();
+    if (importantLinks != null) data["Important Links"] = importantLinks?.map((e) => e.toJson()).toList();
+    return data;
   }
 }
 
 class ImportantLinks {
-  ImportantLinks({
-    required this.contentURL,
-    required this.title,
-  });
+  String? id;
+  String? contentUrl;
+  String? title;
 
-  late final String contentURL;
-  late final String title;
+  ImportantLinks({this.id, this.contentUrl, this.title});
 
-  ImportantLinks.fromJson(Map<String, dynamic> json){
-    contentURL = json['Content URL'] ?? "";
-    title = json['Title'] ?? "";
+  ImportantLinks.fromJson(Map<String, dynamic> json) {
+    id = json["_id"];
+    contentUrl = json["Content URL"];
+    title = json["Title"];
   }
 
   Map<String, dynamic> toJson() {
-    final _data = <String, dynamic>{};
-    _data['Content URL'] = contentURL;
-    _data['Title'] = title;
-    return _data;
+    final Map<String, dynamic> data = <String, dynamic>{};
+    data["_id"] = id;
+    data["Content URL"] = contentUrl;
+    data["Title"] = title;
+    return data;
+  }
+}
+
+class Material {
+  String? id;
+  String? contentUrl;
+  String? title;
+
+  Material({this.id, this.contentUrl, this.title});
+
+  Material.fromJson(Map<String, dynamic> json) {
+    id = json["_id"];
+    contentUrl = json["Content URL"];
+    title = json["Title"];
+  }
+
+  Map<String, dynamic> toJson() {
+    final Map<String, dynamic> data = <String, dynamic>{};
+    data["_id"] = id;
+    data["Content URL"] = contentUrl;
+    data["Title"] = title;
+    return data;
+  }
+}
+
+class RecommendedBooks {
+  String? id;
+  String? publication;
+  String? author;
+  String? bookTitle;
+
+  RecommendedBooks({this.id, this.publication, this.author, this.bookTitle});
+
+  RecommendedBooks.fromJson(Map<String, dynamic> json) {
+    id = json["_id"];
+    publication = json["Publication"];
+    author = json["Author"];
+    bookTitle = json["BookTitle"];
+  }
+
+  Map<String, dynamic> toJson() {
+    final Map<String, dynamic> data = <String, dynamic>{};
+    data["_id"] = id;
+    data["Publication"] = publication;
+    data["Author"] = author;
+    data["BookTitle"] = bookTitle;
+    return data;
+  }
+}
+
+class Moderators {
+  String? id;
+  String? contactNumber;
+  String? uid;
+  String? name;
+
+  Moderators({this.id, this.contactNumber, this.uid, this.name});
+
+  Moderators.fromJson(Map<String, dynamic> json) {
+    id = json["_id"];
+    contactNumber = json["Contact Number"];
+    uid = json["uid"];
+    name = json["Name"];
+  }
+
+  Map<String, dynamic> toJson() {
+    final Map<String, dynamic> data = <String, dynamic>{};
+    data["_id"] = id;
+    data["Contact Number"] = contactNumber;
+    data["uid"] = uid;
+    data["Name"] = name;
+    return data;
+  }
+}
+
+class QuestionPapers {
+  String? id;
+  String? type;
+  String? year;
+  String? title;
+  String? url;
+
+  QuestionPapers({this.id, this.type, this.year, this.title, this.url});
+
+  QuestionPapers.fromJson(Map<String, dynamic> json) {
+    id = json["_id"];
+    type = json["Type"];
+    year = json["Year"];
+    title = json["Title"];
+    url = json["URL"];
+  }
+
+  Map<String, dynamic> toJson() {
+    final Map<String, dynamic> data = <String, dynamic>{};
+    data["_id"] = id;
+    data["Type"] = type;
+    data["Year"] = year;
+    data["Title"] = title;
+    data["URL"] = url;
+    return data;
   }
 }

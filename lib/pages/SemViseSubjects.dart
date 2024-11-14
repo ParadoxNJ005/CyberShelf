@@ -5,14 +5,15 @@ import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:lottie/lottie.dart';
+import 'package:opinionx/models/SemViseSubModel.dart';
 import '../components/Custom_navDrawer.dart';
 import '../components/custom_helpr.dart';
 import '../database/Apis.dart';
-import '../models/SemViseSubModel.dart';
-import '../models/SpecificSubjectModel.dart';
+import '../models/subjectModel.dart';
 import '../utils/constants.dart';
 import 'SearchPage.dart';
 import 'SubjectDetails.dart';
+
 
 class SemViseSubjects extends StatefulWidget{
   const SemViseSubjects({super.key});
@@ -157,7 +158,6 @@ class _SemViseSubjectsState extends State<SemViseSubjects>{
                   SizedBox(height: 16),
                   Expanded(
                       child: _subCardList(_subjectList ?? [])
-                      // child: _subCardList([])
                   ),
                 ],
               ),
@@ -213,17 +213,20 @@ class _SemViseSubjectsState extends State<SemViseSubjects>{
       return Padding(padding: EdgeInsets.symmetric(horizontal: 20),
           child:
           InkWell(
-            onTap: () async{
+            onTap: () async {
               var temp = await storage.read(key: "$department");
               if (temp != null) {
+                // print("hbjnekdne ded ,ma xs ${temp}");
                 Map<String, dynamic> tempJson = json.decode(temp);
-                SpecificSubject specificSubject = SpecificSubject.fromJson(tempJson);
+                Subject subject= Subject.fromJson(tempJson);
+
+                // Log the specificSubject JSON
+                print('SpecificSubject JSON: ${json.encode(subject.toJson())}'); // Assuming you have a toJson method in your SpecificSubject class
 
                 Navigator.push(
                   context,
                   MaterialPageRoute(
-                    // builder: (_) => SubjectDetail(subject: specificSubject),
-                    builder: (_) => SubjectDetail(),
+                    builder: (_) => SubjectDetail(subject: subject),
                   ),
                 );
               } else {

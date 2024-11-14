@@ -45,10 +45,12 @@ class _HomeScreenState extends State<HomeScreen> {
 
 
   Future<void> _initializeData() async {
-    await APIs.offlineInfo();
-    await LOCALs.MakeSearchFunctionality();
-    await APIs.fetchSemViceSubject();
     await APIs.myInfo();
+    await APIs.offlineInfo();
+    // await LOCALs.MakeSearchFunctionality();
+    await APIs.erpData();
+    await APIs.fetchAllSubjects();
+    await APIs.fetchSemViceSubject();
     _findFromSearchList = await LOCALs.finalSeachDataList?? [];
     String branchName = APIs.me!.branch!;
     // log("hello world ${branchName}");
