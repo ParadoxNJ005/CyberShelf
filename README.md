@@ -1,4 +1,4 @@
-# SemResource (Upgraded Version of SemBreaker)
+# Cyber Shelf
 
 An advanced platform available on both Android and Web, designed to empower users with streamlined access to academic resources and utilities.
 
